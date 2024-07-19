@@ -2,12 +2,12 @@ pipeline{
     agent any
 stages{
     stage("checkout"){
-        Steps{
+        steps{
                 checkout scm
         }
     }
     stage("Test"){
-       Steps{
+       steps{
         sh 'sudo apt install npm '
         sh 'npm test'
         }
