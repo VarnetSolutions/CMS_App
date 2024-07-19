@@ -5,8 +5,10 @@
   "main": "Server.js",
   "type": "module",
   "scripts": {
-   "test": "echo \"Running tests...\"",
-    "build": "echo \"Building the project...\" && exit 0"
+   "test": "jest",
+  "test:coverage": "jest --coverage",
+  "test:integration": "jest --testPathPattern=integration",
+  "test:e2e": "cypress run"
   },
   "author": "",
   "license": "ISC",
