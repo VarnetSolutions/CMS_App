@@ -9,17 +9,20 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout scm
+                stash name: 'workspace', includes: '**/*'
             }
         }
 
         stage('Install Dependencies') {
             steps {
                 script {
+                    unstash 'workspace'
                     if (isUnix()) {
                         sh 'npm install'
                     } else {
                         bat 'npm install'
                     }
+                    stash name: 'workspace', includes: '**/*'
                 }
             }
         }
@@ -27,11 +30,13 @@ pipeline {
         stage('Test') {
             steps {
                 script {
+                    unstash 'workspace'
                     if (isUnix()) {
                         sh 'npm test'
                     } else {
                         bat 'npm test'
                     }
+                    stash name: 'workspace', includes: '**/*'
                 }
             }
         }
@@ -39,11 +44,13 @@ pipeline {
         stage('Build') {
             steps {
                 script {
+                    unstash 'workspace'
                     if (isUnix()) {
                         sh 'npm run build'
                     } else {
                         bat 'npm run build'
                     }
+                    stash name: 'workspace', includes: '**/*'
                 }
             }
         }
