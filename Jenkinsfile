@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                checkout scm // Checkout the code from the repository
             }
         }
 
@@ -16,22 +16,45 @@ pipeline {
             steps {
                 script {
                     if (isUnix()) {
-                        sh 'sudo apt-get update && sudo apt-get install -y npm'
-                        sh 'npm install'
+                        sh 'npm install' // Install dependencies on Unix-based systems
                     } else {
-                        bat 'npm install'
+                        bat 'npm install' // Install dependencies on Windows
                     }
                 }
             }
         }
 
-        stage('Test') {
+        stage('Run Unit Tests') {
             steps {
                 script {
                     if (isUnix()) {
-                        sh 'npm test'
+                        sh 'npm test' // Run unit tests on Unix-based systems
                     } else {
-                        bat 'npm test'
+                        bat 'npm test' // Run unit tests on Windows
+                    }
+                }
+            }
+        }
+
+        stage('Run Integration Tests') {
+            steps {
+                script {
+                    if (isUnix()) {
+                        sh 'npm run test:integration' // Run integration tests on Unix-based systems
+                    } else {
+                        bat 'npm run test:integration' // Run integration tests on Windows
+                    }
+                }
+            }
+        }
+
+        stage('Run End-to-End Tests') {
+            steps {
+                script {
+                    if (isUnix()) {
+                        sh 'npm run test:e2e' // Run end-to-end tests on Unix-based systems
+                    } else {
+                        bat 'npm run test:e2e' // Run end-to-end tests on Windows
                     }
                 }
             }
@@ -41,12 +64,21 @@ pipeline {
             steps {
                 script {
                     if (isUnix()) {
-                        sh 'npm run build'
+                        sh 'npm run build' // Build the project on Unix-based systems
                     } else {
-                        bat 'npm run build'
+                        bat 'npm run build' // Build the project on Windows
                     }
                 }
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline succeeded'
+        }
+        failure {
+            echo 'Pipeline failed'
         }
     }
 }
