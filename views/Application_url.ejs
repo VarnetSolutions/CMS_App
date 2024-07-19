@@ -1,0 +1,39 @@
+<!-- views/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Management</title>
+</head>
+<body>
+    <h1>URL Management</h1>
+
+    <form action="/" method="POST">
+        <label for="tenantCode">Tenant Code:</label>
+        <input type="text" id="tenantCode" name="tenantCode" required>
+
+        <label for="url">URL:</label>
+        <input type="text" id="url" name="url" required>
+
+        <label for="appName">Application Name:</label>
+        <input type="text" id="appName" name="appName" required>
+
+        <button type="submit">Add URL</button>
+    </form>
+
+    <hr>
+
+    <h2>All URLs</h2>
+    <ul>
+        <% urls.forEach(url => { %>
+            <li><%= url.appName %> - <%= url.url %> 
+                <form action="/urls/<%= url._id %>?_method=DELETE" method="POST">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        <% }); %>
+    </ul>
+</body>
+</html>
